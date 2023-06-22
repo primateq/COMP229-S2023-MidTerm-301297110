@@ -23,23 +23,23 @@ router.get('/', (req, res, next) => {
 
 });
 
-//  GET the Book Details page in order to add a new Book - CREATE Operation
+//  GET the Book Details page in order to add a new Book 
 router.get('/details', async (req, res, next) => {
 
-    try {
-      res.render('books/details', {title: 'Books'})
-    } catch (err) {
-      console.log(err);
-    }
-
+  try {
+    res.render('books/details', {title: 'Add Book', book: {} })
+  } 
+  catch (err) {
+    console.log(err);
+  }
 });
 
-// POST process the Book Details page and create a new Book - UPDATE Operation
+// POST process the Book Details page and create a new Book 
 router.post('/details', async (req, res, next) => {
 
-     let newBook = new Book ({
+     let newBook = new book ({
       "Title": req.body.Title,
-      "Description": req.body.Descrption,
+      "Description": req.body.Description,
       "Price": req.body.Price,
       "Author": req.body.Author,
       "Genre": req.body.Genre
@@ -61,7 +61,7 @@ router.get('/details/:id', async (req, res, next) => {
     let id = req.params.id;
 
     try {
-      let bookToEdit = await books.findById(id);
+      let bookToEdit = await book.findById(id);
       res.render('books/details', {title: 'Edit Book', book: bookToEdit});
     }
     catch (err) {
@@ -71,13 +71,13 @@ router.get('/details/:id', async (req, res, next) => {
 });
 
 // POST - process the information passed from the details form and update the document
-router.post('/detials/:id', async (req, res, next) => {
+router.post('/details/:id', async (req, res, next) => {
 
   let id = req.params.id;
 
   let updatedBook = {
     "Title": req.body.Title,
-    "Description": req.body.Descrption,
+    "Description": req.body.Description,
     "Price": req.body.Price,
     "Author": req.body.Author,
     "Genre": req.body.Genre
@@ -85,7 +85,7 @@ router.post('/detials/:id', async (req, res, next) => {
 
    try {
     await book.updateOne({_id: id}, updatedBook);
-    res.render('/books');
+    res.redirect('/books');
   }
   catch (err) {
         console.log(err);
